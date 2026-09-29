@@ -1,0 +1,866 @@
+{
+  "pbtResults": {
+    "11.1 Escribir pruebas de propiedad del código de partida": {
+      "status": "passed",
+      "lastRunTimestamp": 1790677981066
+    },
+    "3.2 Escribir prueba de propiedad de tolerancia a corrupción": {
+      "status": "passed",
+      "lastRunTimestamp": 1790677985331
+    },
+    "3.4 Escribir pruebas de propiedad de Settings": {
+      "status": "passed",
+      "lastRunTimestamp": 1790678240740
+    },
+    "3.6 Escribir pruebas de propiedad de posiciones recientes": {
+      "status": "passed",
+      "lastRunTimestamp": 1790678253981
+    }
+  },
+  "executionHistory": {
+    "1. Configurar framework de pruebas y dependencias nuevas": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676826944
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676841495
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677243900
+      }
+    ],
+    "2.1 Implementar `SkipLink` (`src/components/a11y/SkipLink.tsx`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827047
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677254738
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677464458
+      }
+    ],
+    "2.2 Implementar `LiveRegion` y hook `useAnnouncer` (`src/components/a11y/LiveRegion.tsx`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827145
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677256125
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677465938
+      }
+    ],
+    "2.3 Escribir pruebas unitarias de `LiveRegion`/`useAnnouncer`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827243
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677491107
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677872095
+      }
+    ],
+    "3.1 Implementar parser tolerante y validación de FEN": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827343
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677257600
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677467215
+      }
+    ],
+    "3.2 Escribir prueba de propiedad de tolerancia a corrupción": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827458
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677882761
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678006748
+      }
+    ],
+    "3.3 Implementar `Settings`: `loadSettings`, `saveSettings` con normalización y manejo de cuota": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827570
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677489951
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677870642
+      }
+    ],
+    "3.4 Escribir pruebas de propiedad de Settings": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827689
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678156156
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678425657
+      }
+    ],
+    "3.5 Implementar `RecentPosition`: `loadRecentFens`, `saveRecentFens`, `pushRecentFen`, `removeRecentFen`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827803
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677881362
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678005362
+      }
+    ],
+    "3.6 Escribir pruebas de propiedad de posiciones recientes": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676827931
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678157482
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678427116
+      }
+    ],
+    "3.7 Implementar `Annotation`: `loadAnnotations`, `saveAnnotation`, `removeAnnotation`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828048
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678009629
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678149687
+      }
+    ],
+    "3.8 Escribir pruebas unitarias de anotaciones y manejo de cuota": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828197
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678158894
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678424228
+      }
+    ],
+    "4.1 Implementar `SettingsProvider` y `useSettings` (`src/context/SettingsProvider.tsx`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828293
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678160297
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678428503
+      }
+    ],
+    "4.2 Escribir prueba de propiedad de contraste reflejado": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828406
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679022772
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679363568
+      }
+    ],
+    "4.3 Escribir pruebas unitarias del provider": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828527
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679388297
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680284588
+      }
+    ],
+    "5. Integrar `RootLayout` con provider y skip link": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828647
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679017906
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679358440
+      }
+    ],
+    "6.1 Escribir pruebas de integración/accesibilidad de la landing": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828759
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680299259
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680530367
+      }
+    ],
+    "7. Trasladar el tablero a `/tablero`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676828882
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679392080
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680280800
+      }
+    ],
+    "8.1 Consumir `voiceRate` y `showPawnLetter` desde `useSettings`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829054
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679393203
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680282226
+      }
+    ],
+    "8.2 Invocar `pushRecentFen` al cargar un FEN válido o completar un movimiento legal": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829165
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680293810
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680527545
+      }
+    ],
+    "8.3 Escribir pruebas del tablero extendido": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829300
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680724070
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680954237
+      }
+    ],
+    "9.1 Estructura y carga de datos del dashboard (`src/app/dashboard/page.tsx`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829436
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680295097
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680526424
+      }
+    ],
+    "9.2 Acciones del dashboard: abrir posición reciente, ajustes y anotaciones": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829565
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680725934
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680954463
+      }
+    ],
+    "9.3 Escribir prueba de propiedad de anuncio en vivo del dashboard": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829679
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680974413
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681380749
+      }
+    ],
+    "9.4 Escribir pruebas de integración/accesibilidad del dashboard": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829826
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680975330
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681379689
+      }
+    ],
+    "10. Checkpoint - Asegurar que pasan las pruebas del núcleo cliente": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676829962
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681425729
+      }
+    ],
+    "11.1 Escribir pruebas de propiedad del código de partida": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830087
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677883853
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678007712
+      }
+    ],
+    "12. Definir tipos del protocolo de mensajes en línea (`src/lib/onlineProtocol.ts`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830219
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677258581
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677468542
+      }
+    ],
+    "13.1 Registro de partidas y creación/unión": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830331
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677489602
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677868817
+      }
+    ],
+    "13.2 Movimiento autoritativo y cumplimiento de turno": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830470
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678161342
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678429599
+      }
+    ],
+    "13.3 Escribir pruebas de propiedad del estado autoritativo": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830576
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679020244
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679361153
+      }
+    ],
+    "13.4 Rendición, tablas y ciclo de vida de conexión (servidor)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830706
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678437831
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678726708
+      }
+    ],
+    "13.5 Seguridad del servidor: validación, autorización, rate-limiting y purga": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830811
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678727791
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679008280
+      }
+    ],
+    "13.6 Escribir prueba de propiedad de reconexión exacta": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676830927
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679021667
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679362592
+      }
+    ],
+    "14.1 Conexión, estado autoritativo y envío de acciones": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831039
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679019707
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679359754
+      }
+    ],
+    "14.2 Reconexión con backoff y anuncios de cada evento de red": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831154
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679389685
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680283636
+      }
+    ],
+    "14.3 Escribir prueba de propiedad de consistencia entre clientes": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831267
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680543011
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680717070
+      }
+    ],
+    "14.4 Escribir prueba de propiedad de anuncio de todo evento de red": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831396
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680544397
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680718149
+      }
+    ],
+    "15.1 Implementar `OnlineLobby` (`src/components/online/OnlineLobby.tsx`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831521
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680296599
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680531712
+      }
+    ],
+    "15.2 Implementar `OnlineStatus` y `OnlineControls` (`src/components/online/`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831662
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680298058
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680529645
+      }
+    ],
+    "15.3 Escribir pruebas de accesibilidad de los componentes en línea": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831796
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680726791
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680951595
+      }
+    ],
+    "16.1 Escribir prueba de integración de dos clientes simulados": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676831906
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680972968
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681376889
+      }
+    ],
+    "17. Implementar el tema CSS de alto contraste y foco visible": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676832023
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680976592
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681378296
+      }
+    ],
+    "18.1 Añadir soporte de `relojMs` en servidor y hook con anuncios de cuenta atrás": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676832209
+      }
+    ],
+    "19.1 Añadir mensajes `chat` como texto plano con límite de longitud": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676832309
+      }
+    ],
+    "20. Checkpoint final - Asegurar que pasan todas las pruebas": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790676832416
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681427014
+      }
+    ],
+    "11. Implementar el código de partida en línea (`src/lib/gameCode.ts`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677487117
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677873499
+      }
+    ],
+    "2. Implementar primitivas de accesibilidad compartidas": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790677872190
+      }
+    ],
+    "3. Implementar capa de persistencia local `lib/storage.ts`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790678427249
+      }
+    ],
+    "13. Implementar el servidor autoritativo (`src/server/gameServer.ts`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679362734
+      }
+    ],
+    "6. Implementar la landing en `/`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790679390663
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680279421
+      }
+    ],
+    "4. Implementar `SettingsProvider` y contexto de ajustes": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680284697
+      }
+    ],
+    "14. Implementar el hook cliente `useOnlineGame` (`src/hooks/useOnlineGame.ts`)": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680718237
+      }
+    ],
+    "15. Implementar los componentes del modo en línea": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680951700
+      }
+    ],
+    "8. Extender `AccessibleChessBoard` para consumir ajustes y registrar posiciones": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680954322
+      }
+    ],
+    "16. Implementar la ruta del modo en línea `/tablero/online/[codigo]`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790680971588
+      },
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681375547
+      }
+    ],
+    "9. Implementar el dashboard en `/dashboard`": [
+      {
+        "executionId": "5bbd7559-dd2b-4a39-9bc9-4bb89e47a750",
+        "chatSessionId": "sess_fb3d15e0-6796-4838-a3e0-2cf32ca83260",
+        "timestamp": 1790681380831
+      }
+    ]
+  }
+}

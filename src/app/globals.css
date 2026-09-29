@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+:root {
+  --once-bg: #e8efe6;
+  --once-panel: #f4f8f3;
+  --once-ink: #142018;
+  --once-muted: #3d5244;
+  --once-accent: #0d6b4c;
+  --once-focus: #c45c16;
+  --once-arrow: #1f5fbf;
+  --once-ring: #c5d4c8;
+  --square-light: #d7e4d2;
+  --square-dark: #4f7a5c;
+  --square-selected: #f0c36a;
+  --hl-yellow: #f5e07a;
+  --hl-red: #e89286;
+  --background: var(--once-bg);
+  --foreground: var(--once-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, #cfe0d4 0%, transparent 55%),
+    radial-gradient(ellipse 70% 45% at 100% 0%, #d9cbb0 0%, transparent 50%),
+    linear-gradient(165deg, #eef4ec 0%, #e8efe6 45%, #dde8da 100%);
+  color: var(--once-ink);
+  font-family: var(--font-body), "Segoe UI", sans-serif;
+  min-height: 100%;
+}
+
+.once-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  background: #edf4ee;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--once-ink);
+  box-shadow: inset 0 0 0 1px var(--once-ring);
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.once-btn:hover {
+  background: #dfeadf;
+}
+
+.once-btn:focus-visible {
+  outline: 3px solid var(--once-focus);
+  outline-offset: 2px;
+}
+
+.once-btn-primary {
+  background: var(--once-accent);
+  color: #f4faf6;
+  box-shadow: none;
+}
+
+.once-btn-primary:hover {
+  background: #0a573e;
+}
+
+.once-btn[aria-pressed="true"],
+.once-btn-active {
+  background: #c8e2d4;
+  box-shadow: inset 0 0 0 2px var(--once-accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+/* ---------------------------------------------------------------------------
+   Tema de alto contraste — activado por `data-contrast="high"` en <html>
+   (lo alterna SettingsProvider). Redefine los tokens ONCE (--once-*, cuadros
+   del tablero y resaltes) a una paleta de alto contraste, de modo que todos
+   los componentes que consumen estas variables cambian automáticamente. Se
+   añaden además reglas a nivel de elemento para reforzar el contraste en
+   superficies que no dependen únicamente de las variables.
+   Requisitos: 1.7, 4.7, 4.8
+--------------------------------------------------------------------------- */
+[data-contrast="high"] {
+  --once-bg: #000000;
+  --once-panel: #0a0a0a;
+  --once-ink: #ffffff;
+  --once-muted: #f2f2f2;
+  --once-accent: #ffd400;
+  --once-focus: #ffd400;
+  --once-arrow: #4cc2ff;
+  --once-ring: #ffffff;
+  --square-light: #ffffff;
+  --square-dark: #000000;
+  --square-selected: #ffd400;
+  --hl-yellow: #ffd400;
+  --hl-red: #ff6b5e;
+  --background: var(--once-bg);
+  --foreground: var(--once-ink);
+}
+
+/* Fondo sólido de alto contraste (sustituye los degradados suaves del body). */
+[data-contrast="high"] body {
+  background: var(--once-bg);
+  color: var(--once-ink);
+}
+
+/* Botones: fondo oscuro, texto claro y borde nítido. */
+[data-contrast="high"] .once-btn {
+  background: #000000;
+  color: #ffffff;
+  box-shadow: inset 0 0 0 2px var(--once-ring);
+}
+
+[data-contrast="high"] .once-btn:hover {
+  background: #1a1a1a;
+}
+
+/* Acción principal: colores invertidos para máximo contraste. */
+[data-contrast="high"] .once-btn-primary {
+  background: var(--once-accent);
+  color: #000000;
+  box-shadow: inset 0 0 0 2px #000000;
+}
+
+[data-contrast="high"] .once-btn-primary:hover {
+  background: #ffe45c;
+}
+
+[data-contrast="high"] .once-btn[aria-pressed="true"],
+[data-contrast="high"] .once-btn-active {
+  background: var(--once-accent);
+  color: #000000;
+  box-shadow: inset 0 0 0 3px #000000;
+}
+
+/* ---------------------------------------------------------------------------
+   Foco visible global — indicador de foco por teclado con contraste ≥3:1
+   frente al color adyacente, incluido el enlace de salto (SkipLink, que se
+   revela con :focus-visible) y todos los enlaces, botones y controles.
+   Requisito: 1.9
+--------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--once-focus);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--once-focus);
+  outline-offset: 2px;
+}
+
+/* En alto contraste reforzamos el anillo con un doble contorno (amarillo sobre
+   negro) para garantizar el contraste ≥3:1 sobre cualquier fondo adyacente. */
+[data-contrast="high"] :focus-visible {
+  outline: 3px solid var(--once-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px #000000;
+}
+
+/* ---------------------------------------------------------------------------
+   Movimiento reducido — suprime todas las animaciones y el desplazamiento
+   animado para que los cambios de posición y de scroll sean instantáneos.
+   Requisitos: 1.8, 3.10
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
