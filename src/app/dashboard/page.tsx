@@ -49,6 +49,8 @@ import { useEffect, useState } from "react";
 
 import { FocusMainOnMount } from "@/components/a11y/FocusMainOnMount";
 import { LiveRegion, useAnnouncer } from "@/components/a11y/LiveRegion";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
 import { useSettings } from "@/context/SettingsProvider";
 import {
   isValidFen,
@@ -260,24 +262,28 @@ export default function DashboardPage() {
   }
 
   return (
-    <main
-      id="contenido"
-      tabIndex={-1}
-      className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-12 px-4 py-12 outline-none"
-      aria-label="Panel de ONCE Chess"
-    >
+    <>
+      <SiteHeader active="panel" />
+      <main
+        id="contenido"
+        tabIndex={-1}
+        className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-12 px-4 py-10 outline-none sm:py-14"
+        aria-label="Panel de ONCE Chess"
+      >
       <FocusMainOnMount targetId="contenido" />
 
       {/* Req. 3.6: una única región en vivo, polite y atómica. */}
       <LiveRegion message={message} politeness="polite" />
 
       <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-bold leading-tight text-[color:var(--once-ink)] sm:text-4xl">
+        <p className="once-kicker">Panel</p>
+        <h1 className="once-display text-4xl font-semibold leading-tight text-[color:var(--once-ink)] sm:text-5xl">
           Panel de ONCE Chess
         </h1>
         <p className="max-w-2xl text-lg text-[color:var(--once-muted)]">
-          Accede al tablero, revisa tus posiciones recientes y tus anotaciones,
-          y ajusta la accesibilidad a tus necesidades.
+          Accede al tablero, juega contra la máquina o en línea, revisa
+          posiciones recientes y ajusta voz, contraste y Braille. Todo el panel
+          se usa con teclado y se anuncia por lector de pantalla.
         </p>
       </header>
 
@@ -288,17 +294,23 @@ export default function DashboardPage() {
       >
         <h2
           id="acceso-rapido-titulo"
-          className="text-2xl font-bold text-[color:var(--once-ink)]"
+          className="once-display text-2xl font-semibold text-[color:var(--once-ink)]"
         >
           Acceso rápido
         </h2>
         <p className="max-w-2xl text-[color:var(--once-muted)]">
-          Abre el tablero accesible para empezar a jugar o estudiar una
-          posición.
+          Elige cómo jugar: tablero libre para estudiar, contra la máquina o
+          partida en línea. La voz y el lector de pantalla anuncian cada cambio.
         </p>
-        <div className="flex flex-wrap gap-4">
-          <a href="/tablero" className="once-btn once-btn-primary">
+        <div className="flex flex-wrap gap-3">
+          <a href="/tablero" className="once-btn once-btn-primary once-btn-lg">
             Abrir el tablero accesible
+          </a>
+          <a href="/tablero/cpu" className="once-btn once-btn-lg">
+            Contra la máquina
+          </a>
+          <a href="/tablero/online/lobby" className="once-btn once-btn-lg">
+            Partida en línea
           </a>
         </div>
       </section>
@@ -310,12 +322,12 @@ export default function DashboardPage() {
       >
         <h2
           id="posiciones-recientes-titulo"
-          className="text-2xl font-bold text-[color:var(--once-ink)]"
+          className="once-display text-2xl font-semibold text-[color:var(--once-ink)]"
         >
           Posiciones recientes
         </h2>
         {recents.length === 0 ? (
-          <p className="text-[color:var(--once-muted)]">
+          <p className="once-surface-quiet max-w-2xl p-4 text-[color:var(--once-muted)]">
             Todavía no tienes posiciones recientes. Se guardarán aquí a medida
             que juegues o cargues posiciones en el tablero.
           </p>
@@ -327,7 +339,7 @@ export default function DashboardPage() {
                 key={recent.id}
                 data-recent-id={recent.id}
                 data-fen={recent.fen}
-                className="flex flex-col gap-3 rounded-md bg-[color:var(--once-panel)] p-4 shadow-[inset_0_0_0_1px_var(--once-ring)]"
+                className="once-list-item"
               >
                 <div>
                   <p className="font-semibold text-[color:var(--once-ink)]">
@@ -368,12 +380,12 @@ export default function DashboardPage() {
       >
         <h2
           id="anotaciones-guardadas-titulo"
-          className="text-2xl font-bold text-[color:var(--once-ink)]"
+          className="once-display text-2xl font-semibold text-[color:var(--once-ink)]"
         >
           Anotaciones guardadas
         </h2>
         {annotations.length === 0 ? (
-          <p className="text-[color:var(--once-muted)]">
+          <p className="once-surface-quiet max-w-2xl p-4 text-[color:var(--once-muted)]">
             Todavía no tienes anotaciones guardadas. Podrás guardar notas
             didácticas asociadas a una posición.
           </p>
@@ -384,7 +396,7 @@ export default function DashboardPage() {
                 key={annotation.id}
                 data-annotation-id={annotation.id}
                 data-fen={annotation.fen}
-                className="flex flex-col gap-3 rounded-md bg-[color:var(--once-panel)] p-4 shadow-[inset_0_0_0_1px_var(--once-ring)]"
+                className="once-list-item"
               >
                 <div>
                   {/* Texto plano, sin dangerouslySetInnerHTML (Req. 7.6). */}
@@ -421,16 +433,20 @@ export default function DashboardPage() {
       <section aria-labelledby="ajustes-titulo" className="flex flex-col gap-4">
         <h2
           id="ajustes-titulo"
-          className="text-2xl font-bold text-[color:var(--once-ink)]"
+          className="once-display text-2xl font-semibold text-[color:var(--once-ink)]"
         >
           Ajustes
         </h2>
+        <p className="max-w-2xl text-[color:var(--once-muted)]">
+          Estos ajustes afectan a todo el sitio: voz sintetizada, contraste y
+          notación Braille de peones. Cada cambio se anuncia al instante.
+        </p>
 
         {/* Req. 4.4: superficie el error de guardado si la persistencia falló. */}
         {saveError !== null ? (
           <p
             role="alert"
-            className="rounded-md bg-[color:var(--once-panel)] p-4 text-[color:var(--once-ink)] shadow-[inset_0_0_0_2px_var(--once-focus)]"
+            className="rounded-[var(--once-radius)] bg-[color:var(--once-panel)] p-4 text-[color:var(--once-ink)] shadow-[inset_0_0_0_2px_var(--once-focus)]"
           >
             {saveError}
           </p>
@@ -438,7 +454,7 @@ export default function DashboardPage() {
 
         <div className="grid gap-3 sm:grid-cols-2">
           {/* Velocidad de voz (Req. 4.5/4.11): botones +/− con clamp [0.5, 2.0]. */}
-          <div className="rounded-md bg-[color:var(--once-panel)] p-4 shadow-[inset_0_0_0_1px_var(--once-ring)]">
+          <div className="once-setting-tile">
             <p
               id="voice-rate-label"
               className="font-semibold text-[color:var(--once-ink)]"
@@ -446,7 +462,7 @@ export default function DashboardPage() {
               Velocidad de voz
             </p>
             <div
-              className="mt-2 flex items-center gap-3"
+              className="flex items-center gap-3"
               role="group"
               aria-labelledby="voice-rate-label"
             >
@@ -478,7 +494,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Letra en peones (Req. 4.12): botón de alternar con aria-pressed. */}
-          <div className="rounded-md bg-[color:var(--once-panel)] p-4 shadow-[inset_0_0_0_1px_var(--once-ring)]">
+          <div className="once-setting-tile">
             <p
               id="pawn-letter-label"
               className="font-semibold text-[color:var(--once-ink)]"
@@ -487,7 +503,7 @@ export default function DashboardPage() {
             </p>
             <button
               type="button"
-              className="once-btn mt-2"
+              className="once-btn self-start"
               aria-pressed={settings.showPawnLetter}
               aria-labelledby="pawn-letter-label"
               onClick={handleToggleShowPawnLetter}
@@ -497,7 +513,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Alto contraste (Req. 4.7/4.8): botón de alternar con aria-pressed. */}
-          <div className="rounded-md bg-[color:var(--once-panel)] p-4 shadow-[inset_0_0_0_1px_var(--once-ring)]">
+          <div className="once-setting-tile">
             <p
               id="high-contrast-label"
               className="font-semibold text-[color:var(--once-ink)]"
@@ -506,7 +522,7 @@ export default function DashboardPage() {
             </p>
             <button
               type="button"
-              className="once-btn mt-2"
+              className="once-btn self-start"
               aria-pressed={settings.highContrast}
               aria-labelledby="high-contrast-label"
               onClick={handleToggleHighContrast}
@@ -516,7 +532,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Voz (Req. 4.9/4.10): botón de alternar con aria-pressed. */}
-          <div className="rounded-md bg-[color:var(--once-panel)] p-4 shadow-[inset_0_0_0_1px_var(--once-ring)]">
+          <div className="once-setting-tile">
             <p
               id="speech-enabled-label"
               className="font-semibold text-[color:var(--once-ink)]"
@@ -525,7 +541,7 @@ export default function DashboardPage() {
             </p>
             <button
               type="button"
-              className="once-btn mt-2"
+              className="once-btn self-start"
               aria-pressed={settings.speechEnabled}
               aria-labelledby="speech-enabled-label"
               onClick={handleToggleSpeech}
@@ -547,5 +563,7 @@ export default function DashboardPage() {
         </div>
       </section>
     </main>
+      <SiteFooter />
+    </>
   );
 }

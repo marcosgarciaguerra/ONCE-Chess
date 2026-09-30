@@ -61,15 +61,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import AccessibleChessBoard from "@/components/AccessibleChessBoard";
 import { FocusMainOnMount } from "@/components/a11y/FocusMainOnMount";
 import { LiveRegion } from "@/components/a11y/LiveRegion";
-import { SkipLink } from "@/components/a11y/SkipLink";
 import { OnlineControls } from "@/components/online/OnlineControls";
 import { OnlineLobby } from "@/components/online/OnlineLobby";
 import { OnlineStatus } from "@/components/online/OnlineStatus";
+import { SiteHeader } from "@/components/SiteHeader";
 import { useSettings } from "@/context/SettingsProvider";
 import {
   useOnlineGame,
   type AnnouncePoliteness,
 } from "@/hooks/useOnlineGame";
+import { esCodigoValido } from "@/lib/gameCode";
 import type { OnlineGameState } from "@/lib/onlineProtocol";
 import { speak } from "@/utils/speech";
 
@@ -155,13 +156,14 @@ export function OnlineGameClient({ codigo }: OnlineGameClientProps) {
     rendirse,
   } = useOnlineGame(codigo, { onAnnounce });
 
-  // ---- Auto-unión al abrir un enlace con código (Req 10.1) ----------------
-  // Si la URL trae un código, intentar unirse **una sola vez** al montar. El
-  // hook no lo hace por su cuenta (sólo fija el código inicial en el estado).
+  // ---- Auto-unión al abrir un enlace con código válido (Req 10.1) ---------
+  // Si la URL trae un código con formato correcto, intentar unirse una sola
+  // vez. Códigos marcadores (`lobby`, `nueva`, etc.) no disparan unión: sirven
+  // para abrir el vestíbulo sin error.
   const autoUnionRef = useRef(false);
   useEffect(() => {
     if (autoUnionRef.current) return;
-    if (codigo.length === 0) return;
+    if (!esCodigoValido(codigo)) return;
     autoUnionRef.current = true;
     unirse(codigo);
   }, [codigo, unirse]);
@@ -176,25 +178,23 @@ export function OnlineGameClient({ codigo }: OnlineGameClientProps) {
 
   return (
     <>
-      <SkipLink targetId="contenido" />
+      <SiteHeader active="online" />
       <main
         id="contenido"
         tabIndex={-1}
-        className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 outline-none"
+        className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-8 outline-none sm:py-10"
         aria-label="Partida de ajedrez en línea"
       >
         <FocusMainOnMount targetId="contenido" />
 
-        <header className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--once-accent)]">
-            ONCE · Comisión Braille Española
-          </p>
-          <h1 className="font-[family-name:var(--font-display)] text-3xl leading-tight text-[var(--once-ink)] sm:text-4xl">
+        <header className="space-y-3">
+          <p className="once-kicker">Modo en línea</p>
+          <h1 className="once-display text-3xl leading-tight text-[var(--once-ink)] sm:text-4xl">
             Ajedrez en línea accesible
           </h1>
-          <p className="max-w-2xl text-base text-[var(--once-muted)]">
-            Juega una partida en tiempo real con otra persona. Cada evento de la
-            partida se anuncia por voz y por lector de pantalla.
+          <p className="max-w-2xl text-base leading-relaxed text-[var(--once-muted)]">
+            Crea o únete a una partida. Cada evento —turno, jaque, desconexión—
+            se anuncia por voz y por lector de pantalla en español.
           </p>
         </header>
 
@@ -210,28 +210,27 @@ export function OnlineGameClient({ codigo }: OnlineGameClientProps) {
           <OnlineLobby
             onCrear={crearPartida}
             onUnirse={unirse}
-            codigoActual={state.codigo || undefined}
+            codigoActual={
+              esCodigoValido(state.codigo) ? state.codigo : undefined
+            }
             errorMensaje={errorMensaje}
           />
         ) : (
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-            {/* Tablero controlado mínimo: refleja el fen autoritativo
-                (`key`+`initialFen`) y queda no interactivo/no enfocable fuera de
-                turno (Req 11.1/12.5). Ver nota de seguimiento del módulo. */}
             <div
               className="min-w-0 flex-1"
               aria-disabled={!tableroInteractivo}
-              // `inert` retira el subárbol del foco, la interacción y el lector
-              // cuando no es el turno de este jugador. React 19 admite el
-              // atributo booleano `inert` de forma nativa.
               inert={!tableroInteractivo}
               style={
                 tableroInteractivo ? undefined : { pointerEvents: "none" }
               }
             >
               {!tableroInteractivo && (
-                <p className="mb-2 text-sm text-[var(--once-muted)]">
-                  No es tu turno. El tablero está bloqueado hasta que muevas tu
+                <p
+                  className="once-status-chip mb-3"
+                  role="status"
+                >
+                  No es tu turno. El tablero está bloqueado hasta que mueva el
                   rival.
                 </p>
               )}
@@ -242,17 +241,21 @@ export function OnlineGameClient({ codigo }: OnlineGameClientProps) {
             </div>
 
             <aside
-              className="flex w-full flex-col gap-6 lg:sticky lg:top-6 lg:w-[min(100%,24rem)]"
+              className="flex w-full flex-col gap-5 lg:sticky lg:top-6 lg:w-[min(100%,24rem)]"
               aria-label="Estado y acciones de la partida en línea"
             >
-              <OnlineStatus state={state} />
-              <OnlineControls
-                state={state}
-                onRendirse={rendirse}
-                onOfrecerTablas={ofrecerTablas}
-                onAceptarTablas={aceptarTablas}
-                onRechazarTablas={rechazarTablas}
-              />
+              <div className="once-surface p-4">
+                <OnlineStatus state={state} />
+              </div>
+              <div className="once-surface p-4">
+                <OnlineControls
+                  state={state}
+                  onRendirse={rendirse}
+                  onOfrecerTablas={ofrecerTablas}
+                  onAceptarTablas={aceptarTablas}
+                  onRechazarTablas={rechazarTablas}
+                />
+              </div>
             </aside>
           </div>
         )}

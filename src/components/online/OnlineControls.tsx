@@ -46,7 +46,7 @@ export function OnlineControls(props: OnlineControlsProps): React.JSX.Element {
       className="once-controls flex flex-col gap-3"
       aria-labelledby="once-controls-titulo"
     >
-      <h2 id="once-controls-titulo" className="text-lg font-semibold">
+      <h2 id="once-controls-titulo" className="once-display text-lg font-semibold text-[var(--once-ink)]">
         Acciones de la partida
       </h2>
 
@@ -88,11 +88,13 @@ export function OnlineControls(props: OnlineControlsProps): React.JSX.Element {
 
       {ofertaDelRival && (
         <div
-          className="once-oferta-tablas flex flex-col gap-2"
+          className="once-oferta-tablas once-surface-quiet flex flex-col gap-2 p-3"
           role="group"
           aria-label="El rival ofrece tablas"
         >
-          <p aria-hidden="true">El rival ofrece tablas.</p>
+          <p className="font-semibold text-[var(--once-ink)]" aria-hidden="true">
+            El rival ofrece tablas.
+          </p>
           <div className="flex flex-wrap gap-2">
             <button
               type="button"

@@ -98,43 +98,28 @@ const DIGITO_A_PALABRA: Record<string, string> = {
 /**
  * Construye una lectura deletreada del código para voz y lector de pantalla.
  *
- * Cada carácter se anuncia de forma inequívoca:
- * - Letras: "M de Madrid".
- * - Dígitos: la palabra del número ("cuatro", "dos").
- * - Guiones: "guion".
- *
  * Ejemplo: `MESA-ROSA-42` →
- * "M de Madrid, E de Enrique, S de Sábado, A de Antonio, guion,
- *  R de Ramón, O de Oviedo, S de Sábado, A de Antonio, guion, cuatro, dos".
+ * `M de Madrid, E de Enrique, S de Sábado, A de Antonio, guion, …`
  */
 export function deletrearCodigo(codigo: string): string {
   const partes: string[] = [];
-  for (const char of codigo.toUpperCase()) {
-    if (char === "-") {
+  for (const ch of codigo.toUpperCase()) {
+    if (ch === "-") {
       partes.push("guion");
-    } else if (char in DIGITO_A_PALABRA) {
-      partes.push(DIGITO_A_PALABRA[char]);
-    } else if (char in LETRA_A_PALABRA) {
-      partes.push(`${char} de ${LETRA_A_PALABRA[char]}`);
-    } else if (char.trim().length > 0) {
-      // Cualquier otro carácter visible se anuncia tal cual como respaldo.
-      partes.push(char);
+      continue;
+    }
+    if (DIGITO_A_PALABRA[ch]) {
+      partes.push(DIGITO_A_PALABRA[ch]);
+      continue;
+    }
+    const palabra = LETRA_A_PALABRA[ch];
+    if (palabra) {
+      partes.push(`${ch} de ${palabra}`);
+    } else {
+      partes.push(ch);
     }
   }
   return partes.join(", ");
-}
-
-/**
- * Construye el enlace directo para unirse a una partida a partir de su código.
- * Usa el `origin` de la ventana actual; en un entorno sin `window` (SSR)
- * devuelve una ruta relativa, suficiente para copiar/mostrar sin fallar.
- */
-function construirEnlace(codigo: string): string {
-  const ruta = `/tablero/online/${encodeURIComponent(codigo)}`;
-  if (typeof window !== "undefined" && window.location?.origin) {
-    return `${window.location.origin}${ruta}`;
-  }
-  return ruta;
 }
 
 export function OnlineLobby({
@@ -143,6 +128,9 @@ export function OnlineLobby({
   codigoActual,
   errorMensaje,
 }: OnlineLobbyProps) {
+  const inputId = useId();
+  const errorId = `${inputId}-error`;
+  const spellId = `${inputId}-spell`;
   const { settings } = useSettings();
   const { message, announce } = useAnnouncer({
     voiceRate: settings.voiceRate,
@@ -150,52 +138,40 @@ export function OnlineLobby({
   });
 
   const [entrada, setEntrada] = useState("");
-  const inputId = useId();
-  const spellId = useId();
-  const errorId = useId();
-
-  const tieneCodigo = typeof codigoActual === "string" && codigoActual.length > 0;
+  const tieneCodigo = Boolean(codigoActual && codigoActual.length > 0);
   const deletreo = tieneCodigo ? deletrearCodigo(codigoActual!) : "";
 
   const handleCrear = useCallback(() => {
+    announce("Creando partida. Se te asignarán las blancas.");
     onCrear();
-    announce("Creando partida.");
-  }, [onCrear, announce]);
+  }, [announce, onCrear]);
 
   const handleUnirse = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
       const normalizado = normalizarCodigo(entrada);
-      if (normalizado.length === 0) {
-        announce("Escribe un código de partida para unirte.", {
-          assertive: true,
-        });
-        return;
-      }
       if (!esCodigoValido(normalizado)) {
         announce(
-          "El código no tiene un formato válido. Debe ser dos palabras y dos números, por ejemplo MESA-ROSA-42.",
+          "Ese código no tiene un formato válido. Debe ser dos palabras y dos dígitos, por ejemplo mesa rosa 42.",
           { assertive: true },
         );
         return;
       }
-      // Req 10.3: se une con el código ya normalizado; el servidor decide si
-      // existe/está disponible y el padre nos devolverá el error si procede.
+      announce(`Uniendo a la partida ${normalizado}.`);
       onUnirse(normalizado);
-      announce(`Uniéndose a la partida ${normalizado}.`);
     },
-    [entrada, onUnirse, announce],
+    [announce, entrada, onUnirse],
   );
 
   const handleCopiar = useCallback(async () => {
-    if (!tieneCodigo) {
-      return;
-    }
-    const enlace = construirEnlace(codigoActual!);
+    if (!tieneCodigo || !codigoActual) return;
+    const enlace =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/tablero/online/${encodeURIComponent(codigoActual)}`
+        : `/tablero/online/${encodeURIComponent(codigoActual)}`;
     const clipboard =
       typeof navigator !== "undefined" ? navigator.clipboard : undefined;
-    // Guarda ante ausencia de la API de portapapeles (navegadores sin soporte
-    // o contextos no seguros): se anuncia el enlace para copiarlo a mano.
+
     if (!clipboard || typeof clipboard.writeText !== "function") {
       announce(
         `No se pudo copiar automáticamente. El enlace es ${enlace}`,
@@ -215,26 +191,36 @@ export function OnlineLobby({
   }, [tieneCodigo, codigoActual, announce]);
 
   return (
-    <section aria-labelledby={`${inputId}-titulo`} className="flex flex-col gap-6">
-      <h2 id={`${inputId}-titulo`} className="text-lg font-semibold">
-        Partida en línea
-      </h2>
+    <section
+      aria-labelledby={`${inputId}-titulo`}
+      className="once-surface flex max-w-xl flex-col gap-6 p-5 sm:p-6"
+    >
+      <div className="space-y-2">
+        <h2
+          id={`${inputId}-titulo`}
+          className="once-display text-2xl font-semibold text-[var(--once-ink)]"
+        >
+          Partida en línea
+        </h2>
+        <p className="text-[var(--once-muted)]">
+          Crea una partida y comparte el código deletreado, o únete con el
+          código que te hayan dictado. Todo se anuncia por voz.
+        </p>
+      </div>
 
-      {/* Región en vivo del lobby: creación, copia y errores de código. */}
       <LiveRegion message={message} />
 
-      {/* Error de código proporcionado por el padre (servidor/hook). */}
       {errorMensaje ? (
         <div
           id={errorId}
           role="alert"
           aria-live="assertive"
-          className="rounded border-2 border-[var(--once-focus)] bg-[var(--once-panel)] p-3 text-[var(--once-ink)]"
+          className="rounded-[var(--once-radius)] bg-[var(--once-panel)] p-4 text-[var(--once-ink)] shadow-[inset_0_0_0_2px_var(--once-focus)]"
         >
           <p className="font-semibold">{errorMensaje}</p>
           <button
             type="button"
-            className="once-btn once-btn-primary mt-2"
+            className="once-btn once-btn-primary mt-3"
             onClick={handleCrear}
           >
             Crear una nueva partida
@@ -243,21 +229,18 @@ export function OnlineLobby({
       ) : null}
 
       {tieneCodigo ? (
-        <div className="flex flex-col gap-3 rounded border border-[var(--once-ring)] bg-[var(--once-panel)] p-4">
+        <div className="once-surface-quiet flex flex-col gap-3 p-4">
           <p className="flex flex-col gap-1">
-            <span className="text-sm text-[var(--once-muted)]">
-              Código de la partida
-            </span>
+            <span className="once-kicker">Código de la partida</span>
             <span
-              className="text-2xl font-bold tracking-widest"
+              className="once-display text-3xl font-bold tracking-[0.12em] text-[var(--once-ink)]"
               aria-describedby={spellId}
             >
               {codigoActual}
             </span>
           </p>
 
-          {/* Deletreo visible + accesible del código (Req 9.7). */}
-          <p id={spellId} className="text-sm text-[var(--once-muted)]">
+          <p id={spellId} className="text-sm leading-relaxed text-[var(--once-muted)]">
             <span className="sr-only">Deletreado: </span>
             {deletreo}
           </p>
@@ -271,14 +254,10 @@ export function OnlineLobby({
           </button>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-[var(--once-muted)]">
-            Crea una partida nueva y comparte el código, o únete con el código
-            que te hayan facilitado.
-          </p>
+        <div className="flex flex-col gap-3">
           <button
             type="button"
-            className="once-btn once-btn-primary self-start"
+            className="once-btn once-btn-primary once-btn-lg self-start"
             onClick={handleCrear}
           >
             Crear partida
@@ -286,9 +265,11 @@ export function OnlineLobby({
         </div>
       )}
 
-      {/* Campo de unión: normaliza la entrada antes de unirse (Req 10.3). */}
       <form className="flex flex-col gap-2" onSubmit={handleUnirse} noValidate>
-        <label htmlFor={inputId} className="text-sm font-medium">
+        <label
+          htmlFor={inputId}
+          className="text-sm font-semibold text-[var(--once-ink)]"
+        >
           Unirse con un código
         </label>
         <div className="flex flex-wrap gap-2">
@@ -297,17 +278,17 @@ export function OnlineLobby({
             type="text"
             inputMode="text"
             autoComplete="off"
-            className="min-w-0 flex-1 rounded border border-[var(--once-ring)] bg-white px-3 py-2 text-[var(--once-ink)]"
+            className="min-w-0 flex-1 rounded-[var(--once-radius)] bg-[var(--once-bg)] px-3 py-2.5 text-[var(--once-ink)] shadow-[inset_0_0_0_1px_var(--once-ring)]"
             placeholder="Ej.: MESA-ROSA-42"
             value={entrada}
             onChange={(event) => setEntrada(event.target.value)}
-            aria-describedby={errorMensaje ? errorId : undefined}
+            aria-describedby={errorMensaje ? errorId : `${inputId}-hint`}
           />
           <button type="submit" className="once-btn once-btn-primary">
             Unirse
           </button>
         </div>
-        <p className="text-xs text-[var(--once-muted)]">
+        <p id={`${inputId}-hint`} className="text-xs text-[var(--once-muted)]">
           No importan mayúsculas, espacios ni guiones: se ajustan
           automáticamente.
         </p>

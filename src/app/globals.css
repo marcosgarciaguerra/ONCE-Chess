@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --once-bg: #e8efe6;
-  --once-panel: #f4f8f3;
-  --once-ink: #142018;
-  --once-muted: #3d5244;
-  --once-accent: #0d6b4c;
+  --once-bg: #e4eee3;
+  --once-panel: #f3f8f2;
+  --once-ink: #102016;
+  --once-muted: #3a4f42;
+  --once-accent: #0b6a4a;
+  --once-accent-deep: #084e37;
   --once-focus: #c45c16;
   --once-arrow: #1f5fbf;
-  --once-ring: #c5d4c8;
-  --square-light: #d7e4d2;
-  --square-dark: #4f7a5c;
-  --square-selected: #f0c36a;
+  --once-ring: #b9ccbe;
+  --once-warm: #c4a574;
+  --square-light: #d5e3d0;
+  --square-dark: #457456;
+  --square-selected: #efc15f;
   --hl-yellow: #f5e07a;
   --hl-red: #e89286;
   --background: var(--once-bg);
   --foreground: var(--once-ink);
+  --once-shadow: 0 18px 50px rgba(16, 40, 28, 0.12);
+  --once-radius: 0.35rem;
 }
 
 @theme inline {
@@ -27,33 +31,115 @@
 
 body {
   background:
-    radial-gradient(ellipse 80% 50% at 10% -10%, #cfe0d4 0%, transparent 55%),
-    radial-gradient(ellipse 70% 45% at 100% 0%, #d9cbb0 0%, transparent 50%),
-    linear-gradient(165deg, #eef4ec 0%, #e8efe6 45%, #dde8da 100%);
+    radial-gradient(ellipse 90% 55% at 8% -8%, #c5dccb 0%, transparent 58%),
+    radial-gradient(ellipse 70% 50% at 100% 0%, #d4c4a4 0%, transparent 52%),
+    linear-gradient(168deg, #f2f7f0 0%, #e4eee3 42%, #d5e4d4 100%);
   color: var(--once-ink);
   font-family: var(--font-body), "Segoe UI", sans-serif;
   min-height: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Tipografía y marca
+--------------------------------------------------------------------------- */
+.once-brand-mark {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--once-ink);
+  text-decoration: none;
+  line-height: 1.1;
+}
+
+.once-brand-hero {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: var(--once-ink);
+}
+
+.once-display {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+/* ---------------------------------------------------------------------------
+   Cabecera del sitio
+--------------------------------------------------------------------------- */
+.once-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid color-mix(in srgb, var(--once-ring) 80%, transparent);
+  background: color-mix(in srgb, var(--once-panel) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.once-site-header__inner {
+  margin-inline: auto;
+  display: flex;
+  width: 100%;
+  max-width: 72rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 1.1rem;
+}
+
+.once-site-header__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Superficies y botones
+--------------------------------------------------------------------------- */
+.once-surface {
+  background: color-mix(in srgb, var(--once-panel) 92%, white);
+  box-shadow:
+    inset 0 0 0 1px var(--once-ring),
+    var(--once-shadow);
+  border-radius: var(--once-radius);
+}
+
+.once-surface-quiet {
+  background: color-mix(in srgb, var(--once-panel) 85%, transparent);
+  box-shadow: inset 0 0 0 1px var(--once-ring);
+  border-radius: var(--once-radius);
 }
 
 .once-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.25rem;
-  background: #edf4ee;
-  padding: 0.55rem 0.9rem;
-  font-size: 0.875rem;
+  border-radius: var(--once-radius);
+  background: color-mix(in srgb, var(--once-panel) 70%, #edf4ee);
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--once-ink);
+  text-decoration: none;
   box-shadow: inset 0 0 0 1px var(--once-ring);
   transition:
-    background-color 120ms ease,
-    color 120ms ease,
-    box-shadow 120ms ease;
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
 .once-btn:hover {
-  background: #dfeadf;
+  background: #d7e6da;
+  transform: translateY(-1px);
+}
+
+.once-btn:active {
+  transform: translateY(0);
 }
 
 .once-btn:focus-visible {
@@ -64,17 +150,225 @@ body {
 .once-btn-primary {
   background: var(--once-accent);
   color: #f4faf6;
-  box-shadow: none;
+  box-shadow: 0 8px 22px rgba(11, 106, 74, 0.22);
 }
 
 .once-btn-primary:hover {
-  background: #0a573e;
+  background: var(--once-accent-deep);
 }
 
 .once-btn[aria-pressed="true"],
 .once-btn-active {
-  background: #c8e2d4;
+  background: #c5e2d2;
   box-shadow: inset 0 0 0 2px var(--once-accent);
+  transform: none;
+}
+
+.once-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.once-btn-lg {
+  padding: 0.85rem 1.35rem;
+  font-size: 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Landing: hero a pantalla completa con tablero atmosférico
+--------------------------------------------------------------------------- */
+.once-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(88vh, 52rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  padding: clamp(2.5rem, 8vw, 5.5rem) 0 clamp(2rem, 5vw, 3.5rem);
+}
+
+.once-hero__board {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      115deg,
+      color-mix(in srgb, var(--once-bg) 18%, transparent) 0%,
+      color-mix(in srgb, var(--once-bg) 72%, transparent) 42%,
+      color-mix(in srgb, var(--once-bg) 92%, transparent) 100%
+    ),
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      #5f8a6a 0deg 90deg,
+      #d8e6d2 90deg 180deg
+    );
+  background-size:
+    auto,
+    min(18vw, 7.5rem) min(18vw, 7.5rem);
+  background-position: center;
+  opacity: 0.55;
+  transform: scale(1.08) rotate(-4deg);
+  animation: once-board-drift 28s ease-in-out infinite alternate;
+}
+
+.once-hero__content {
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: once-rise 700ms ease-out both;
+}
+
+.once-feature-list {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--once-ring);
+}
+
+.once-feature-list > li {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--once-ring);
+}
+
+@media (min-width: 640px) {
+  .once-feature-list {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.5rem;
+  }
+
+  .once-feature-list > li:nth-child(odd) {
+    padding-right: 1rem;
+  }
+}
+
+.once-cta-band {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--once-accent) 12%, var(--once-panel)) 0%,
+      var(--once-panel) 55%
+    );
+  box-shadow: inset 0 0 0 1px var(--once-ring);
+  border-radius: var(--once-radius);
+}
+
+.once-cta-band::before {
+  content: "";
+  position: absolute;
+  inset: auto -10% -40% 55%;
+  height: 140%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      color-mix(in srgb, var(--once-accent) 35%, transparent) 0deg 90deg,
+      transparent 90deg 180deg
+    );
+  background-size: 2.4rem 2.4rem;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Panel / listados
+--------------------------------------------------------------------------- */
+.once-list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.1rem 1.15rem;
+  background: color-mix(in srgb, var(--once-panel) 92%, white);
+  box-shadow: inset 0 0 0 1px var(--once-ring);
+  border-radius: var(--once-radius);
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.once-list-item:hover {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--once-accent) 45%, var(--once-ring)),
+    0 10px 28px rgba(16, 40, 28, 0.08);
+  transform: translateY(-1px);
+}
+
+.once-setting-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.1rem 1.15rem;
+  background: color-mix(in srgb, var(--once-panel) 92%, white);
+  box-shadow: inset 0 0 0 1px var(--once-ring);
+  border-radius: var(--once-radius);
+}
+
+.once-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--once-accent);
+}
+
+.once-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--once-ring);
+  background: color-mix(in srgb, var(--once-panel) 90%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+   Tablero: marco y panel lateral
+--------------------------------------------------------------------------- */
+.once-app {
+  animation: once-rise 550ms ease-out both;
+}
+
+.once-board-shell {
+  border-radius: var(--once-radius);
+  overflow: hidden;
+  box-shadow:
+    var(--once-shadow),
+    inset 0 0 0 1px var(--once-ring);
+}
+
+.once-status-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--once-panel);
+  padding: 0.4rem 0.85rem;
+  font-weight: 600;
+  color: var(--once-ink);
+  box-shadow: inset 0 0 0 1px var(--once-ring);
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+--------------------------------------------------------------------------- */
+@keyframes once-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.85rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes once-board-drift {
+  from {
+    transform: scale(1.08) rotate(-4deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) rotate(-2.5deg) translate3d(-1.5%, 1%, 0);
+  }
 }
 
 .sr-only {
@@ -88,14 +382,9 @@ body {
   white-space: nowrap;
   border-width: 0;
 }
+
 /* ---------------------------------------------------------------------------
    Tema de alto contraste — activado por `data-contrast="high"` en <html>
-   (lo alterna SettingsProvider). Redefine los tokens ONCE (--once-*, cuadros
-   del tablero y resaltes) a una paleta de alto contraste, de modo que todos
-   los componentes que consumen estas variables cambian automáticamente. Se
-   añaden además reglas a nivel de elemento para reforzar el contraste en
-   superficies que no dependen únicamente de las variables.
-   Requisitos: 1.7, 4.7, 4.8
 --------------------------------------------------------------------------- */
 [data-contrast="high"] {
   --once-bg: #000000;
@@ -103,9 +392,11 @@ body {
   --once-ink: #ffffff;
   --once-muted: #f2f2f2;
   --once-accent: #ffd400;
+  --once-accent-deep: #ffe45c;
   --once-focus: #ffd400;
   --once-arrow: #4cc2ff;
   --once-ring: #ffffff;
+  --once-warm: #ffd400;
   --square-light: #ffffff;
   --square-dark: #000000;
   --square-selected: #ffd400;
@@ -113,26 +404,43 @@ body {
   --hl-red: #ff6b5e;
   --background: var(--once-bg);
   --foreground: var(--once-ink);
+  --once-shadow: none;
 }
 
-/* Fondo sólido de alto contraste (sustituye los degradados suaves del body). */
 [data-contrast="high"] body {
   background: var(--once-bg);
   color: var(--once-ink);
 }
 
-/* Botones: fondo oscuro, texto claro y borde nítido. */
+[data-contrast="high"] .once-site-header {
+  background: #000000;
+  border-bottom-color: #ffffff;
+  backdrop-filter: none;
+}
+
+[data-contrast="high"] .once-hero__board {
+  opacity: 0.35;
+  animation: none;
+  background:
+    linear-gradient(#000000 0%, transparent 55%),
+    repeating-conic-gradient(#ffffff 0deg 90deg, #000000 90deg 180deg);
+  background-size:
+    auto,
+    3rem 3rem;
+}
+
 [data-contrast="high"] .once-btn {
   background: #000000;
   color: #ffffff;
   box-shadow: inset 0 0 0 2px var(--once-ring);
+  transform: none;
 }
 
 [data-contrast="high"] .once-btn:hover {
   background: #1a1a1a;
+  transform: none;
 }
 
-/* Acción principal: colores invertidos para máximo contraste. */
 [data-contrast="high"] .once-btn-primary {
   background: var(--once-accent);
   color: #000000;
@@ -150,12 +458,25 @@ body {
   box-shadow: inset 0 0 0 3px #000000;
 }
 
-/* ---------------------------------------------------------------------------
-   Foco visible global — indicador de foco por teclado con contraste ≥3:1
-   frente al color adyacente, incluido el enlace de salto (SkipLink, que se
-   revela con :focus-visible) y todos los enlaces, botones y controles.
-   Requisito: 1.9
---------------------------------------------------------------------------- */
+[data-contrast="high"] .once-surface,
+[data-contrast="high"] .once-surface-quiet,
+[data-contrast="high"] .once-list-item,
+[data-contrast="high"] .once-setting-tile,
+[data-contrast="high"] .once-cta-band,
+[data-contrast="high"] .once-status-chip {
+  background: #000000;
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+[data-contrast="high"] .once-list-item:hover {
+  transform: none;
+  box-shadow: inset 0 0 0 3px #ffd400;
+}
+
+[data-contrast="high"] .once-cta-band::before {
+  display: none;
+}
+
 :focus-visible {
   outline: 3px solid var(--once-focus);
   outline-offset: 2px;
@@ -173,19 +494,12 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 
-/* En alto contraste reforzamos el anillo con un doble contorno (amarillo sobre
-   negro) para garantizar el contraste ≥3:1 sobre cualquier fondo adyacente. */
 [data-contrast="high"] :focus-visible {
   outline: 3px solid var(--once-focus);
   outline-offset: 2px;
   box-shadow: 0 0 0 6px #000000;
 }
 
-/* ---------------------------------------------------------------------------
-   Movimiento reducido — suprime todas las animaciones y el desplazamiento
-   animado para que los cambios de posición y de scroll sean instantáneos.
-   Requisitos: 1.8, 3.10
---------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -198,5 +512,10 @@ textarea:focus-visible,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .once-btn:hover,
+  .once-list-item:hover {
+    transform: none;
   }
 }

@@ -74,10 +74,10 @@ function renderBoard(initialFen?: string) {
   );
 }
 
-/** Localiza el botón de una casilla por el prefijo de su aria-label ("e2, ..."). */
+/** Localiza el botón de una casilla por el prefijo de su aria-label. */
 function squareButton(square: string): HTMLElement {
   return screen.getByRole("button", {
-    name: new RegExp(`^${square},`),
+    name: new RegExp(`^Casilla ${square},`),
   });
 }
 
@@ -255,6 +255,39 @@ describe("AccessibleChessBoard extendido (Task 8.3)", () => {
         expect.any(String),
         expect.objectContaining({ rate: 1.7 }),
       );
+    });
+  });
+
+  describe("Exploración por hover (accesibilidad)", () => {
+    it("al pasar el puntero por una casilla anuncia ubicación y pieza", async () => {
+      const user = userEvent.setup();
+      seedSettings({ speechEnabled: true });
+      renderBoard(STARTING_FEN);
+
+      await waitFor(() => {
+        expect(screen.getByRole("application")).toBeInTheDocument();
+      });
+      speakMock.mockClear();
+
+      await user.hover(squareButton("e4"));
+
+      await waitFor(() => {
+        expect(speakMock).toHaveBeenCalled();
+      });
+      expect(speakMock).toHaveBeenLastCalledWith(
+        expect.stringMatching(/Casilla e4/i),
+        expect.objectContaining({ interrupt: true }),
+      );
+      expect(
+        screen.getByText(/Casilla e4/i, { selector: "p" }),
+      ).toBeInTheDocument();
+    });
+
+    it("las casillas exponen aria-label descriptivo con casilla y pieza", () => {
+      renderBoard(STARTING_FEN);
+      const e2 = squareButton("e2");
+      expect(e2.getAttribute("aria-label")).toMatch(/Casilla e2.*Pe[oó]n/i);
+      expect(e2).toHaveAttribute("title", e2.getAttribute("aria-label"));
     });
   });
 });

@@ -1,5 +1,6 @@
 import AccessibleChessBoard from "@/components/AccessibleChessBoard";
 import { FocusMainOnMount } from "@/components/a11y/FocusMainOnMount";
+import { SiteHeader } from "@/components/SiteHeader";
 import { isValidFen } from "@/lib/storage";
 import { STARTING_FEN } from "@/utils/onceChessBraille";
 
@@ -41,14 +42,17 @@ export default async function TableroPage({
   const initialFen = hasFen && isValidFen(fenParam) ? fenParam : STARTING_FEN;
 
   return (
-    <main
-      id="contenido"
-      tabIndex={-1}
-      className="flex flex-1 flex-col outline-none"
-      aria-label="Tablero de ajedrez accesible"
-    >
-      <FocusMainOnMount targetId="contenido" />
-      <AccessibleChessBoard initialFen={initialFen} />
-    </main>
+    <>
+      <SiteHeader active="tablero" />
+      <main
+        id="contenido"
+        tabIndex={-1}
+        className="flex flex-1 flex-col outline-none"
+        aria-label="Tablero de ajedrez accesible"
+      >
+        <FocusMainOnMount targetId="contenido" />
+        <AccessibleChessBoard initialFen={initialFen} />
+      </main>
+    </>
   );
 }

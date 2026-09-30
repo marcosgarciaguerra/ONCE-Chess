@@ -22,9 +22,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ajedrez accesible B8 · ONCE",
+  title: "ONCE Chess · Ajedrez accesible para personas ciegas",
   description:
-    "Tablero de ajedrez accesible con notación Braille Unicode B8 (Comisión Braille Española / ONCE) y descripción audio para lectores de pantalla.",
+    "Ajedrez accesible con teclado, voz sintetizada, lector de pantalla, alto contraste y notación Braille Unicode B8 (ONCE / Comisión Braille Española).",
 };
 
 export default function RootLayout({

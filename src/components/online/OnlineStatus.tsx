@@ -116,7 +116,7 @@ export function OnlineStatus(props: OnlineStatusProps): React.JSX.Element {
       className="once-status flex flex-col gap-2"
       aria-labelledby="once-status-titulo"
     >
-      <h2 id="once-status-titulo" className="text-lg font-semibold">
+      <h2 id="once-status-titulo" className="once-display text-lg font-semibold text-[var(--once-ink)]">
         Estado de la partida
       </h2>
 

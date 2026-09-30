@@ -18,7 +18,6 @@ import {
   fenToOnceBraille,
   neighborSquare,
   normalizeSquare,
-  pieceToken,
   SPANISH_PIECE_NAME,
   STARTING_FEN,
   type BoardArrow,
@@ -30,6 +29,12 @@ import {
 import { ensureVoicesLoaded, speak, stopSpeaking } from "@/utils/speech";
 import { useSettings } from "@/context/SettingsProvider";
 import { pushRecentFen } from "@/lib/storage";
+import {
+  applyCpuMove,
+  chooseCpuMove,
+  cpuLevelLabel,
+  type CpuLevel,
+} from "@/lib/cpuEngine";
 
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"] as const;
 const RANKS_DISPLAY = ["8", "7", "6", "5", "4", "3", "2", "1"] as const;
@@ -41,8 +46,14 @@ const UNICODE_PIECES: Record<"w" | "b", Record<PieceType, string>> = {
 
 type AnnotationMode = "play" | "highlight-amarillo" | "highlight-rojo" | "arrow";
 
-type AccessibleChessBoardProps = {
+export type AccessibleChessBoardProps = {
   initialFen?: string;
+  /** Rival: libre (estudio) o máquina. Por defecto libre. */
+  opponent?: "none" | "cpu";
+  /** Dificultad de la CPU (0 fácil, 1 medio, 2 difícil). */
+  cpuLevel?: CpuLevel;
+  /** Color del jugador humano en modo CPU. Por defecto blancas. */
+  playerColor?: "w" | "b";
 };
 
 function pieceFromChess(
@@ -81,6 +92,9 @@ function positionLabel(chess: Chess): string {
 
 export default function AccessibleChessBoard({
   initialFen = STARTING_FEN,
+  opponent = "none",
+  cpuLevel = 1,
+  playerColor = "w",
 }: AccessibleChessBoardProps) {
   const boardId = useId();
   const liveId = `${boardId}-live`;
@@ -89,10 +103,11 @@ export default function AccessibleChessBoard({
 
   const { settings, toggleShowPawnLetter } = useSettings();
   const showPawnLetter = settings.showPawnLetter;
+  const vsCpu = opponent === "cpu";
 
   const [game, setGame] = useState(() => new Chess(initialFen));
   const [fenInput, setFenInput] = useState(initialFen);
-  const [cursor, setCursor] = useState("e2");
+  const [cursor, setCursor] = useState(playerColor === "w" ? "e2" : "e7");
   const [selected, setSelected] = useState<string | null>(null);
   const [legalTargets, setLegalTargets] = useState<string[]>([]);
   const [annotationMode, setAnnotationMode] =
@@ -102,13 +117,24 @@ export default function AccessibleChessBoard({
   const [arrowFrom, setArrowFrom] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
   const [copyFeedback, setCopyFeedback] = useState("");
-  const [statusMessage, setStatusMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState(
+    vsCpu
+      ? `Contra la máquina (${cpuLevelLabel(cpuLevel)}). Tú juegas con ${playerColor === "w" ? "blancas" : "negras"}.`
+      : "",
+  );
+  const [cpuBusy, setCpuBusy] = useState(false);
 
   const boardRef = useRef<HTMLDivElement>(null);
   const skipAnnounceRef = useRef(true);
   const initialRegisteredRef = useRef(false);
+  const welcomedRef = useRef(false);
+  const cpuTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cpuBusyRef = useRef(false);
   const gameRef = useRef(game);
   gameRef.current = game;
+  const announceRef = useRef<(message: string, withSpeech?: boolean) => void>(
+    () => {},
+  );
 
   const fen = game.fen();
 
@@ -133,11 +159,32 @@ export default function AccessibleChessBoard({
     },
     [settings.speechEnabled, settings.voiceRate],
   );
+  announceRef.current = announce;
 
   useEffect(() => {
     void ensureVoicesLoaded();
-    return () => stopSpeaking();
+    return () => {
+      stopSpeaking();
+      if (cpuTimerRef.current) clearTimeout(cpuTimerRef.current);
+    };
   }, []);
+
+  // Orientación inicial para personas ciegas: una sola vez al montar.
+  useEffect(() => {
+    if (welcomedRef.current) return;
+    welcomedRef.current = true;
+    const piece = pieceFromChess(cursor, gameRef.current);
+    const here = announceSquare(cursor, piece);
+    if (vsCpu) {
+      announce(
+        `Partida contra la máquina, nivel ${cpuLevelLabel(cpuLevel)}. Tú juegas con las ${playerColor === "w" ? "blancas" : "negras"}. Flechas para explorar, Enter o Espacio para mover, tecla D para descripción. ${here}.`,
+      );
+    } else {
+      announce(
+        `Tablero accesible listo. Flechas para explorar, Enter o Espacio para seleccionar o mover, tecla D para descripción completa. ${here}.`,
+      );
+    }
+  }, [announce, cpuLevel, cursor, playerColor, vsCpu]);
 
   // Requisito 2.5: al montar con una posición cargada vía URL (`?fen=...`),
   // registrarla exactamente una vez. Se omite la posición inicial estándar
@@ -210,6 +257,9 @@ export default function AccessibleChessBoard({
   );
 
   const resetBoard = useCallback(() => {
+    if (cpuTimerRef.current) clearTimeout(cpuTimerRef.current);
+    cpuBusyRef.current = false;
+    setCpuBusy(false);
     const next = new Chess();
     setGame(next);
     setFenInput(next.fen());
@@ -218,10 +268,13 @@ export default function AccessibleChessBoard({
     setHighlighted([]);
     setArrows([]);
     setArrowFrom(null);
-    setCursor("e2");
-    setStatusMessage("Tablero reiniciado a la posición inicial.");
-    announce("Tablero reiniciado a la posición inicial.");
-  }, [announce]);
+    setCursor(playerColor === "w" ? "e2" : "e7");
+    const msg = vsCpu
+      ? `Nueva partida contra la máquina (${cpuLevelLabel(cpuLevel)}). Tú juegas con ${playerColor === "w" ? "blancas" : "negras"}.`
+      : "Tablero reiniciado a la posición inicial.";
+    setStatusMessage(msg);
+    announce(msg);
+  }, [announce, cpuLevel, playerColor, vsCpu]);
 
   const toggleHighlight = useCallback(
     (square: string, color: HighlightColor) => {
@@ -273,8 +326,76 @@ export default function AccessibleChessBoard({
     [announce, arrowFrom],
   );
 
+  const applyPlayedMove = useCallback(
+    (
+      draft: Chess,
+      result: {
+        from: string;
+        to: string;
+        piece: string;
+        captured?: string;
+      },
+      speaker: "human" | "cpu",
+    ) => {
+      setGame(draft);
+      setFenInput(draft.fen());
+      setSelected(null);
+      setLegalTargets([]);
+      pushRecentFen(draft.fen(), positionLabel(draft));
+
+      const capture = result.captured
+        ? `, captura ${SPANISH_PIECE_NAME[result.captured as PieceType].singular}`
+        : "";
+      const check = draft.isCheckmate()
+        ? ". Jaque mate"
+        : draft.isCheck()
+          ? ". Jaque"
+          : "";
+      const who =
+        speaker === "cpu"
+          ? `La máquina mueve ${SPANISH_PIECE_NAME[result.piece as PieceType].singular}`
+          : `Movido ${SPANISH_PIECE_NAME[result.piece as PieceType].singular}`;
+      announce(`${who} de ${result.from} a ${result.to}${capture}${check}.`);
+
+      if (draft.isGameOver()) {
+        if (draft.isCheckmate()) {
+          const winner =
+            draft.turn() === "w" ? "negras" : "blancas";
+          const humanWon =
+            (playerColor === "w" && winner === "blancas") ||
+            (playerColor === "b" && winner === "negras");
+          const msg = vsCpu
+            ? humanWon
+              ? `Jaque mate. Has ganado.`
+              : `Jaque mate. Gana la máquina.`
+            : `Jaque mate. Ganan las ${winner}.`;
+          setStatusMessage(msg);
+          if (vsCpu) announce(msg);
+        } else if (draft.isDraw()) {
+          setStatusMessage("Partida empatada.");
+          if (vsCpu) announce("Partida empatada.");
+        }
+      } else if (vsCpu && draft.turn() !== playerColor) {
+        setStatusMessage("Turno de la máquina.");
+      } else {
+        setStatusMessage(
+          `Turno de las ${draft.turn() === "w" ? "blancas" : "negras"}.`,
+        );
+      }
+    },
+    [announce, playerColor, vsCpu],
+  );
+
   const tryMove = useCallback(
     (from: string, to: string) => {
+      if (vsCpu && (cpuBusy || game.turn() !== playerColor)) {
+        announce(
+          cpuBusy
+            ? "Espere: la máquina está pensando."
+            : "No es tu turno. Espera a la máquina.",
+        );
+        return false;
+      }
       const draft = new Chess(game.fen());
       try {
         const result = draft.move({
@@ -286,62 +407,110 @@ export default function AccessibleChessBoard({
           announce("Movimiento ilegal.");
           return false;
         }
-        setGame(draft);
-        setFenInput(draft.fen());
-        setSelected(null);
-        setLegalTargets([]);
-        // Requisito 2.5: registrar exactamente una vez la posición resultante
-        // tras completar un movimiento legal.
-        pushRecentFen(draft.fen(), positionLabel(draft));
-
-        const capture = result.captured
-          ? `, captura ${SPANISH_PIECE_NAME[result.captured as PieceType].singular}`
-          : "";
-        const check = draft.isCheckmate()
-          ? ". Jaque mate"
-          : draft.isCheck()
-            ? ". Jaque"
-            : "";
-        announce(
-          `Movido ${SPANISH_PIECE_NAME[result.piece as PieceType].singular} de ${from} a ${to}${capture}${check}.`,
+        applyPlayedMove(
+          draft,
+          {
+            from,
+            to,
+            piece: result.piece,
+            captured: result.captured,
+          },
+          "human",
         );
-
-        if (draft.isGameOver()) {
-          if (draft.isCheckmate()) {
-            setStatusMessage(
-              `Jaque mate. Ganan las ${draft.turn() === "w" ? "negras" : "blancas"}.`,
-            );
-          } else if (draft.isDraw()) {
-            setStatusMessage("Partida empatada.");
-          }
-        } else {
-          setStatusMessage(
-            `Turno de las ${draft.turn() === "w" ? "blancas" : "negras"}.`,
-          );
-        }
         return true;
       } catch {
         announce("Movimiento ilegal.");
         return false;
       }
     },
-    [announce, game],
+    [announce, applyPlayedMove, cpuBusy, game, playerColor, vsCpu],
   );
+
+  // Tras el movimiento humano (o si el humano es negras al inicio), la CPU responde.
+  useEffect(() => {
+    if (!vsCpu) return;
+    const current = gameRef.current;
+    if (current.isGameOver()) return;
+    if (current.turn() === playerColor) return;
+    if (cpuBusyRef.current) return;
+
+    cpuBusyRef.current = true;
+    setCpuBusy(true);
+    announceRef.current(
+      `La máquina piensa. Nivel ${cpuLevelLabel(cpuLevel)}.`,
+    );
+    setStatusMessage("La máquina piensa…");
+
+    const level = cpuLevel;
+    const human = playerColor;
+    const timer = setTimeout(() => {
+      const live = gameRef.current;
+      if (live.isGameOver() || live.turn() === human) {
+        cpuBusyRef.current = false;
+        setCpuBusy(false);
+        return;
+      }
+      const choice = chooseCpuMove(live.fen(), level);
+      if (!choice) {
+        cpuBusyRef.current = false;
+        setCpuBusy(false);
+        announceRef.current("La máquina no tiene movimientos legales.");
+        return;
+      }
+      const draft = new Chess(live.fen());
+      const result = applyCpuMove(draft, choice);
+      if (!result) {
+        cpuBusyRef.current = false;
+        setCpuBusy(false);
+        announceRef.current("Error al aplicar el movimiento de la máquina.");
+        return;
+      }
+      applyPlayedMove(
+        draft,
+        {
+          from: choice.from,
+          to: choice.to,
+          piece: result.piece,
+          captured: result.captured,
+        },
+        "cpu",
+      );
+      setCursor(choice.to);
+      cpuBusyRef.current = false;
+      setCpuBusy(false);
+    }, 550);
+    cpuTimerRef.current = timer;
+
+    return () => {
+      clearTimeout(timer);
+      // Permite reprogramar si el efecto se limpia antes de ejecutar (StrictMode).
+      cpuBusyRef.current = false;
+    };
+  }, [applyPlayedMove, cpuLevel, fen, playerColor, vsCpu]);
 
   const activateSquare = useCallback(
     (square: string) => {
       const s = normalizeSquare(square);
       setCursor(s);
 
-      if (annotationMode === "highlight-amarillo") {
+      if (vsCpu && (cpuBusy || game.turn() !== playerColor)) {
+        announce(
+          cpuBusy
+            ? "Espere: la máquina está pensando."
+            : "Ahora mueve la máquina. Espere su turno.",
+        );
+        return;
+      }
+
+      if (!vsCpu && annotationMode === "highlight-amarillo") {
         toggleHighlight(s, "amarillo");
         return;
       }
-      if (annotationMode === "highlight-rojo") {
+      if (!vsCpu && annotationMode === "highlight-rojo") {
         toggleHighlight(s, "rojo");
         return;
       }
-      if (annotationMode === "arrow") {
+      if (!vsCpu && annotationMode === "arrow") {
         handleArrowClick(s);
         return;
       }
@@ -380,7 +549,9 @@ export default function AccessibleChessBoard({
       }
       if (piece.color !== game.turn()) {
         announce(
-          `Es el turno de las ${game.turn() === "w" ? "blancas" : "negras"}.`,
+          vsCpu
+            ? `Esa pieza es de la máquina. Tú juegas con las ${playerColor === "w" ? "blancas" : "negras"}.`
+            : `Es el turno de las ${game.turn() === "w" ? "blancas" : "negras"}.`,
         );
         return;
       }
@@ -393,13 +564,16 @@ export default function AccessibleChessBoard({
     [
       annotationMode,
       announce,
+      cpuBusy,
       game,
       handleArrowClick,
       legalTargets,
+      playerColor,
       refreshLegal,
       selected,
       toggleHighlight,
       tryMove,
+      vsCpu,
     ],
   );
 
@@ -494,6 +668,15 @@ export default function AccessibleChessBoard({
     [activateSquare],
   );
 
+  /**
+   * Exploración táctil/ratón: al pasar por una casilla se mueve el cursor y el
+   * efecto de `cursor` anuncia ubicación + pieza por aria-live y voz (útil
+   * para baja visión y para acompañantes que guían con el puntero).
+   */
+  const onSquarePointerEnter = useCallback((square: string) => {
+    setCursor(normalizeSquare(square));
+  }, []);
+
   const turnLabel =
     game.turn() === "w" ? "Turno: blancas" : "Turno: negras";
 
@@ -503,20 +686,20 @@ export default function AccessibleChessBoard({
         className="flex min-w-0 flex-1 flex-col gap-4"
         aria-labelledby={`${boardId}-title`}
       >
-        <header className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--once-accent)]">
+        <header className="space-y-3">
+          <p className="once-kicker">
             ONCE · Comisión Braille Española
           </p>
           <h1
             id={`${boardId}-title`}
-            className="font-[family-name:var(--font-display)] text-3xl leading-tight text-[var(--once-ink)] sm:text-4xl"
+            className="once-display text-3xl leading-tight text-[var(--once-ink)] sm:text-4xl"
           >
-            Ajedrez accesible B8
+            {vsCpu ? "Partida contra la máquina" : "Ajedrez accesible B8"}
           </h1>
-          <p className="max-w-2xl text-base text-[var(--once-muted)]">
-            Tablero jugable por teclado y voz. Exporta notación Braille Unicode
-            (Documento Técnico B8) y descripción audio para lectores de
-            pantalla.
+          <p className="max-w-2xl text-base leading-relaxed text-[var(--once-muted)]">
+            {vsCpu
+              ? `Juegas con las ${playerColor === "w" ? "blancas" : "negras"} contra la CPU (nivel ${cpuLevelLabel(cpuLevel)}). Todo se anuncia por voz y lector de pantalla.`
+              : "Tablero jugable solo con teclado y voz. Cada casilla se anuncia al explorar. Exporta Braille Unicode B8 y descripción audio ONCE."}
           </p>
         </header>
 
@@ -525,54 +708,67 @@ export default function AccessibleChessBoard({
           role="status"
           aria-live="polite"
         >
-          <span className="rounded-sm bg-[var(--once-panel)] px-3 py-1.5 font-medium text-[var(--once-ink)] ring-1 ring-[var(--once-ring)]">
-            {turnLabel}
+          <span className="once-status-chip">
+            {vsCpu
+              ? cpuBusy
+                ? "La máquina piensa"
+                : game.turn() === playerColor
+                  ? "Tu turno"
+                  : "Turno de la máquina"
+              : turnLabel}
           </span>
           {statusMessage ? (
             <span className="text-[var(--once-muted)]">{statusMessage}</span>
           ) : null}
         </div>
 
-        <div
-          className="flex flex-wrap gap-2"
-          role="toolbar"
-          aria-label="Modo de anotación didáctica"
-        >
-          {(
-            [
-              ["play", "Jugar"],
-              ["highlight-amarillo", "Resaltar amarillo"],
-              ["highlight-rojo", "Resaltar rojo"],
-              ["arrow", "Flecha"],
-            ] as const
-          ).map(([mode, label]) => (
-            <button
-              key={mode}
-              type="button"
-              className={`once-btn ${annotationMode === mode ? "once-btn-active" : ""}`}
-              aria-pressed={annotationMode === mode}
-              onClick={() => {
-                setAnnotationMode(mode);
-                setArrowFrom(null);
-                announce(`Modo ${label} activado.`);
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        {!vsCpu ? (
+          <div
+            className="flex flex-wrap gap-2"
+            role="toolbar"
+            aria-label="Modo de anotación didáctica"
+          >
+            {(
+              [
+                ["play", "Jugar"],
+                ["highlight-amarillo", "Resaltar amarillo"],
+                ["highlight-rojo", "Resaltar rojo"],
+                ["arrow", "Flecha"],
+              ] as const
+            ).map(([mode, label]) => (
+              <button
+                key={mode}
+                type="button"
+                className={`once-btn ${annotationMode === mode ? "once-btn-active" : ""}`}
+                aria-pressed={annotationMode === mode}
+                onClick={() => {
+                  setAnnotationMode(mode);
+                  setArrowFrom(null);
+                  announce(`Modo ${label} activado.`);
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         <div
           ref={boardRef}
           role="application"
-          aria-label="Tablero de ajedrez accesible. Flechas para navegar, Enter o Espacio para seleccionar o mover, tecla D para descripción completa, Escape para cancelar."
+          aria-label={
+            vsCpu
+              ? `Tablero contra la máquina. ${cpuBusy ? "La máquina está pensando." : "Tu turno."} Flechas para explorar, Enter o Espacio para mover, tecla D para descripción, Escape para cancelar.`
+              : "Tablero de ajedrez accesible. Flechas o pasar el puntero sobre una casilla para oír su ubicación y pieza. Enter o Espacio para seleccionar o mover. Tecla D para descripción completa. Escape para cancelar."
+          }
+          aria-busy={cpuBusy || undefined}
           aria-describedby={liveId}
           tabIndex={0}
           onKeyDown={onBoardKeyDown}
           className="once-board-focus relative w-full max-w-[min(100%,560px)] outline-none focus-visible:ring-4 focus-visible:ring-[var(--once-focus)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--once-bg)]"
         >
           <div
-            className="grid grid-cols-[auto_repeat(8,minmax(0,1fr))] grid-rows-[repeat(8,minmax(0,1fr))_auto] gap-0 overflow-hidden rounded-sm shadow-[0_12px_40px_rgba(20,40,30,0.18)] ring-1 ring-[var(--once-ring)]"
+            className="once-board-shell grid grid-cols-[auto_repeat(8,minmax(0,1fr))] grid-rows-[repeat(8,minmax(0,1fr))_auto] gap-0"
             style={{ aspectRatio: "1 / 1.05" }}
           >
             {RANKS_DISPLAY.map((rank) => (
@@ -598,32 +794,30 @@ export default function AccessibleChessBoard({
                       (a) => a.from === square || a.to === square,
                     );
 
-                  let pieceLabel = "vacía";
-                  if (piece) {
-                    const adj =
-                      piece.type === "q" || piece.type === "r"
-                        ? piece.color === "w"
-                          ? "blanca"
-                          : "negra"
-                        : piece.color === "w"
-                          ? "blanco"
-                          : "negro";
-                    pieceLabel = `${SPANISH_PIECE_NAME[piece.type].singular} ${adj}`;
-                  }
-
-                  const brailleCode = piece
-                    ? pieceToken(piece.type, square, showPawnLetter)
-                    : square;
+                  const squareDescription = announceSquare(square, piece);
+                  const stateHints: string[] = [];
+                  if (isSelected) stateHints.push("pieza seleccionada");
+                  if (isTarget) stateHints.push("destino legal");
+                  if (hl) stateHints.push(`resaltada en ${hl.color}`);
+                  if (isCursor) stateHints.push("cursor actual");
+                  const accessibleName =
+                    stateHints.length > 0
+                      ? `${squareDescription}, ${stateHints.join(", ")}`
+                      : squareDescription;
 
                   return (
                     <button
                       key={square}
                       type="button"
                       tabIndex={-1}
-                      aria-label={`${square}, ${pieceLabel}, Braille ${brailleCode}`}
+                      title={accessibleName}
+                      aria-label={accessibleName}
+                      aria-roledescription="casilla de ajedrez"
                       aria-current={isCursor ? "true" : undefined}
                       aria-pressed={isSelected}
                       onClick={(e) => onSquareClick(square, e)}
+                      onMouseEnter={() => onSquarePointerEnter(square)}
+                      onFocus={() => onSquarePointerEnter(square)}
                       className={[
                         "relative flex aspect-square items-center justify-center text-[clamp(1.4rem,4.5vw,2.4rem)] transition-colors",
                         isLight ? "bg-[var(--square-light)]" : "bg-[var(--square-dark)]",
@@ -671,30 +865,45 @@ export default function AccessibleChessBoard({
           {liveMessage}
         </p>
 
-        <details className="rounded-sm bg-[var(--once-panel)] p-4 ring-1 ring-[var(--once-ring)]">
-          <summary className="cursor-pointer font-medium text-[var(--once-ink)]">
-            Ayuda de teclado y voz
-          </summary>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-[var(--once-muted)]">
-            <li>Flechas: navegar casillas a1–h8</li>
-            <li>Enter / Espacio: seleccionar pieza o confirmar destino</li>
-            <li>D: cantar descripción completa del tablero (Audio ONCE)</li>
-            <li>Escape: cancelar selección o flecha en curso</li>
+        <div
+          className="once-surface-quiet space-y-2 p-4"
+          aria-labelledby={`${boardId}-ayuda`}
+        >
+          <h2
+            id={`${boardId}-ayuda`}
+            className="font-semibold text-[var(--once-ink)]"
+          >
+            Cómo jugar sin ver la pantalla
+          </h2>
+          <ul className="list-disc space-y-1 pl-5 text-sm text-[var(--once-muted)]">
             <li>
-              En modo anotación, Enter/clic marca resaltados o flechas
-              didácticas B8
+              Tabule hasta el tablero. Flechas: moverse entre casillas a1–h8;
+              cada casilla se anuncia por voz.
             </li>
+            <li>Enter o Espacio: seleccionar pieza o confirmar el destino.</li>
+            <li>Tecla D: descripción completa del tablero (Audio ONCE).</li>
+            <li>Escape: cancelar la selección.</li>
+            {vsCpu ? (
+              <li>
+                Tras tu jugada, la máquina responde sola y se anuncia el
+                movimiento. Espere si oye «la máquina piensa».
+              </li>
+            ) : (
+              <li>
+                Pasar el puntero por una casilla también anuncia su ubicación.
+              </li>
+            )}
           </ul>
-        </details>
+        </div>
       </section>
 
       <aside
         className="flex w-full flex-col gap-5 lg:sticky lg:top-6 lg:w-[min(100%,24rem)]"
         aria-label="Panel Braille y audio ONCE"
       >
-        <div className="space-y-3 rounded-sm bg-[var(--once-panel)] p-4 ring-1 ring-[var(--once-ring)]">
+        <div className="once-surface space-y-3 p-4">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold text-[var(--once-ink)]">
+            <h2 className="once-display text-lg font-semibold text-[var(--once-ink)]">
               Braille Unicode B8
             </h2>
             <label className="flex items-center gap-2 text-sm text-[var(--once-muted)]">
@@ -716,7 +925,7 @@ export default function AccessibleChessBoard({
           </div>
           <pre
             id={brailleId}
-            className="max-h-48 overflow-auto whitespace-pre-wrap break-words rounded-sm bg-[var(--once-bg)] p-3 font-mono text-sm leading-relaxed text-[var(--once-ink)] ring-1 ring-[var(--once-ring)]"
+            className="max-h-48 overflow-auto whitespace-pre-wrap break-words rounded-[var(--once-radius)] bg-[var(--once-bg)] p-3 font-mono text-sm leading-relaxed text-[var(--once-ink)] shadow-[inset_0_0_0_1px_var(--once-ring)]"
             tabIndex={0}
             aria-label="Texto Braille ONCE B8 generado"
           >
@@ -737,8 +946,8 @@ export default function AccessibleChessBoard({
           ) : null}
         </div>
 
-        <div className="space-y-3 rounded-sm bg-[var(--once-panel)] p-4 ring-1 ring-[var(--once-ring)]">
-          <h2 className="text-lg font-semibold text-[var(--once-ink)]">
+        <div className="once-surface space-y-3 p-4">
+          <h2 className="once-display text-lg font-semibold text-[var(--once-ink)]">
             Audio descriptivo ONCE
           </h2>
           <p
@@ -752,8 +961,8 @@ export default function AccessibleChessBoard({
           </button>
         </div>
 
-        <div className="space-y-3 rounded-sm bg-[var(--once-panel)] p-4 ring-1 ring-[var(--once-ring)]">
-          <h2 className="text-lg font-semibold text-[var(--once-ink)]">
+        <div className="once-surface space-y-3 p-4">
+          <h2 className="once-display text-lg font-semibold text-[var(--once-ink)]">
             Cargar FEN
           </h2>
           <label className="sr-only" htmlFor={`${boardId}-fen`}>
@@ -764,7 +973,7 @@ export default function AccessibleChessBoard({
             value={fenInput}
             onChange={(e) => setFenInput(e.target.value)}
             rows={3}
-            className="w-full rounded-sm bg-[var(--once-bg)] p-3 font-mono text-xs text-[var(--once-ink)] ring-1 ring-[var(--once-ring)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--once-focus)]"
+            className="w-full rounded-[var(--once-radius)] bg-[var(--once-bg)] p-3 font-mono text-xs text-[var(--once-ink)] shadow-[inset_0_0_0_1px_var(--once-ring)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--once-focus)]"
             spellCheck={false}
           />
           <div className="flex flex-wrap gap-2">

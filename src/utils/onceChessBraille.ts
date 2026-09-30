@@ -314,8 +314,9 @@ export function fenToOnceAudio(fen: string): string {
 }
 
 /**
- * Anuncio corto de una casilla (navegación por teclado).
- * Ejemplo: "Casilla e4, Peón blanco, e braille 4"
+ * Anuncio corto de una casilla (navegación por teclado / hover).
+ * Pensado para voz y lector de pantalla en español.
+ * Ejemplo: "Casilla e4, Peón blanco, columna e, fila 4"
  */
 export function announceSquare(
   square: string,
@@ -324,10 +325,9 @@ export function announceSquare(
   const s = normalizeSquare(square);
   const file = s[0];
   const rank = s[1];
-  const braillePart = `${file} braille ${rank}`;
 
   if (!piece) {
-    return `Casilla ${s}, vacía, ${braillePart}`;
+    return `Casilla ${s}, vacía, columna ${file}, fila ${rank}`;
   }
 
   const name = SPANISH_PIECE_NAME[piece.type].singular;
@@ -340,7 +340,7 @@ export function announceSquare(
         : "negra"
       : colorLabel;
 
-  return `Casilla ${s}, ${name} ${adj}, ${braillePart}`;
+  return `Casilla ${s}, ${name} ${adj}, columna ${file}, fila ${rank}`;
 }
 
 /**
